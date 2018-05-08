@@ -1,6 +1,6 @@
-#Physics Lab Reports With Excel
+# Physics Lab Reports With Excel
 
-##Files
+## Files
 
 - Roster.csv (A text file containing the student roster, sample provided)
 
@@ -10,7 +10,7 @@
 
 - CreateFeedbackSheet.bas (this macro requires a worksheet called RUBRIC to exist in SampleLabReport where this code is executing. It generates a new worksheet called Feedback where the instructor will enter the student's grades)
 
-##Tips for a better performance:
+## Tips for a better performance:
 
 - It is wise to import both CreateRoster.bas and CreateFeedbackSheet.bas to PERSONAL.XLSB, so this code could be called to run on any Excel file.
 
