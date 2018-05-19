@@ -33,6 +33,7 @@ Sub CreateGradingSheet()
     Dim royalBlue As Long
     Dim courseLabel As String
     Dim LastRowRubric As Long
+    Dim rowRef As Integer   ' This a reference, the row where the indicators begin
     
     royalBlue = 6299648
     sheetName = "Feedback"
@@ -58,6 +59,9 @@ Sub CreateGradingSheet()
         Sheets("GRADE").Delete
         Application.DisplayAlerts = True
     End If
+    
+' Collect the lab name from the headers that already exist
+  header = ActiveWorkbook.Worksheets(2).PageSetup.CenterHeader
     
 ' Page setup
     With Worksheets(sheetName).PageSetup
@@ -92,6 +96,7 @@ Sub CreateGradingSheet()
         .Range("B1").Font.Bold = True
         .Range("B1").Interior.Color = royalBlue
         .Range("B1").Font.Color = vbWhite
+        
         For i = 5 To 8
             If Sheets("Intro").Range("C" & i).Value <> "" Then
                 .Range("B" & i - 3).Value = Sheets("Intro").Range("C" & i).Value
@@ -186,5 +191,13 @@ End Sub
 
 
 
-
+Sub Test()
+    Dim wr As Worksheet
+    Dim LastRubric As Long
+    
+    Set wr = Sheets("RUBRIC")
+    LastRowRubric = wr.Cells(wr.Rows.Count, 4).End(xlUp).Row
+    MsgBox (LastRowRubric)
+    
+End Sub
 
