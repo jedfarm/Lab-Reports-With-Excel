@@ -22,6 +22,7 @@ Sub CreateGradingSheet()
 
     Dim ws As Worksheet
     Dim wr As Worksheet
+    Dim xSh As Variant
     Dim sheetName As String
     Dim header As String
     Dim i As Long
@@ -33,6 +34,7 @@ Sub CreateGradingSheet()
     Dim royalBlue As Long
     Dim courseLabel As String
     Dim LastRowRubric As Long
+    Dim visShtNum As Long
     Dim rowRef As Integer   ' This a reference, the row where the indicators begin
     
     royalBlue = 6299648
@@ -98,6 +100,7 @@ Sub CreateGradingSheet()
         .Range("B1").Font.Color = vbWhite
         
         For i = 5 To 8
+        ' TODO: Repeated students' names not allowed
             If Sheets("Intro").Range("C" & i).Value <> "" Then
                 .Range("B" & i - 3).Value = Sheets("Intro").Range("C" & i).Value
             End If
@@ -125,7 +128,20 @@ Sub CreateGradingSheet()
                 .Range("C" & i).Formula = "=SUM(" & r4.Address(0, 0) & ")"
             End If
         Next i
-         
+        
+        ' Add page number
+        visShtNum = 0
+        For Each xSht In ActiveWorkbook.Sheets
+            If xSht.Visible = True Then visShtNum = visShtNum + 1
+        Next
+        .PageSetup.CenterFooter = "PAGE " & visShtNum
+        
+        ' Change the page view to page layout (so the page number becomes visible)
+        .Activate
+        With ActiveWindow
+            .View = xlPageLayoutView
+        End With
+        
     End With
    TableHeadersHCC Worksheets(sheetName).Range("B1:D1")
    TableHeadersHCC Worksheets(sheetName).Range("E7:K7")
