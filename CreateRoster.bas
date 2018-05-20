@@ -26,7 +26,9 @@ Sub CreateRoster()
     Dim myRoster() As String
     Dim i As Long
     Dim range1 As Range, rng As Range
-    
+    Dim visN As Long
+    Dim footer As String
+    Dim labName As String
     
     'Check for the existence of a previous roster. If it exists delete it
     If sheetExists("Roster") Then
@@ -64,5 +66,26 @@ Sub CreateRoster()
     Next i
     Sheets("Roster").Visible = xlSheetVeryHidden
     
+    ' Write Page Numbers and Headers
+        visN = 0
+        labName = ActiveWorkbook.Worksheets(1).Range("A2").Value
+        For i = 1 To ActiveWorkbook.Worksheets.Count
+           If ActiveWorkbook.Worksheets(i).Visible = True Then
+            visN = visN + 1
+            footer = "PAGE " & visN
+            With ActiveWorkbook.Worksheets(i)
+                If i > 1 Then
+                    .PageSetup.CenterHeader = labName
+                End If
+                .PageSetup.CenterFooter = footer
+                .Activate
+                With ActiveWindow
+                    .View = xlPageLayoutView
+                End With
+            End With
+           End If
+        Next i
+            
+      
 End Sub
 
