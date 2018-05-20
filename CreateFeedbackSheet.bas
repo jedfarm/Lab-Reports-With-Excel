@@ -49,18 +49,28 @@ Sub CreateGradingSheet()
     End If
   
 
-'Check for the existence of a grade sheet. If exists, delete it
-    If sheetExists(sheetName) = False Then
-        Set ws = Sheets.Add(After:=Sheets(Worksheets.Count))
-        ws.Name = sheetName
-    End If
-    
 ' Delete old grading sheet
     If sheetExists("GRADE") Then
         Application.DisplayAlerts = False
         Sheets("GRADE").Delete
         Application.DisplayAlerts = True
+    ElseIf sheetExists("Feedback") Then
+         MsgBox "A new Feedback Sheet will overwrite the existent one" & vbCrLf & _
+         "If you want to proceed anyway, please, delete the current Feedback Sheet  manually first", _
+         vbExclamation, "Feedback Sheet Already Present"
+         Exit Sub
     End If
+
+
+
+'If there is no Feedback sheet, create one
+    If sheetExists(sheetName) = False Then
+        Set ws = Sheets.Add(After:=Sheets(Worksheets.Count))
+        ws.Name = sheetName
+    
+    End If
+    
+
     
 ' Collect the lab name from the headers that already exist
   header = ActiveWorkbook.Worksheets(2).PageSetup.CenterHeader
