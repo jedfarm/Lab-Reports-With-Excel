@@ -40,6 +40,8 @@ If you don't know how to do it, [here](https://github.com/jedfarm/zipgrade/blob/
 - It would be a good practice for the instructor to make the RUBRIC worksheet password protected once finished customizing it. The students will have access, but won't be able to modify it in any way.
 
  - It does not matter which values the drop down menu had initially, when CreateRoster.bas is run, it overwrites the existing values.
+ 
+ - The Sub CreateRosterForAllExcelFilesInFolder opens a dialog to select a folder and allows to run Create Roster at once for all the existing Excel files in that folder.
 
 ## Known limitations:
 - The maximum number of students allowed per team is 4.
