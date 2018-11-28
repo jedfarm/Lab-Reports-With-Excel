@@ -1,6 +1,5 @@
 Attribute VB_Name = "CreateRoster"
 
-
 Function sheetExists(sheetToFind As String) As Boolean
     sheetExists = False
     For Each Sheet In Worksheets
@@ -29,6 +28,7 @@ Sub CreateRoster()
     Dim visN As Long
     Dim footer As String
     Dim labName As String
+    Dim sectionID As String
     
     'Check for the existence of a previous roster. If it exists delete it
     If sheetExists("Roster") Then
@@ -40,12 +40,15 @@ Sub CreateRoster()
     
     'Import the roster from a .csv file
     Set wsht = Worksheets.Add(After:=Worksheets(Worksheets.Count))
-    Set wbkS = Workbooks.Open(Filename:=ActiveWorkbook.Path & "\Roster.csv")
+    Set wbkS = Workbooks.Open(filename:=ActiveWorkbook.Path & "\Roster.csv")
     Set wshS = wbkS.Worksheets(1)
     wshS.Range("A1:A2").EntireRow.Delete
     wshS.UsedRange.Copy Destination:=wsht.Range("A1")
     wbkS.Close SaveChanges:=False
     wsht.Name = "Roster"
+    If IsEmpty(wsht.Cells(3, 4)) = False Then
+        sectionID = wsht.Cells(3, 4).Value
+    End If
     wsht.Range("B:XFD").ClearContents
     
     
@@ -74,7 +77,9 @@ Sub CreateRoster()
             visN = visN + 1
             footer = "PAGE " & visN
             With ActiveWorkbook.Worksheets(i)
-                If i > 1 Then
+                If i = 1 Then
+                    .PageSetup.CenterHeader = sectionID
+                Else
                     .PageSetup.CenterHeader = labName
                 End If
                 .PageSetup.CenterFooter = footer
@@ -129,7 +134,7 @@ NextCode:
 'Loop through each Excel file in folder
   Do While myFile <> ""
     'Set variable equal to opened workbook
-      Set wb = Workbooks.Open(Filename:=myPath & myFile)
+      Set wb = Workbooks.Open(filename:=myPath & myFile)
     
     'Ensure Workbook has opened before moving on to next line of code
       DoEvents
