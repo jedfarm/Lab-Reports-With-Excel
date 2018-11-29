@@ -22,6 +22,7 @@ Sub CreateRoster()
     Dim wsht As Worksheet
     Dim wst As Worksheet
     Dim lastRow As Long
+    Dim sectionCol As Long
     Dim myRoster() As String
     Dim i As Long
     Dim range1 As Range, rng As Range
@@ -42,12 +43,24 @@ Sub CreateRoster()
     Set wsht = Worksheets.Add(After:=Worksheets(Worksheets.Count))
     Set wbkS = Workbooks.Open(filename:=ActiveWorkbook.Path & "\Roster.csv")
     Set wshS = wbkS.Worksheets(1)
+    
+    sectionCol = -1 ' In case there is no column named "Section" in the Roster file.
+    On Error Resume Next
+    sectionCol = wshS.Cells(1, 1).EntireRow.Find(What:="Section", LookIn:=xlValues, LookAt:=xlPart, _
+    SearchOrder:=xlByColumns, SearchDirection:=xlNext, MatchCase:=False).Column
+    
     wshS.Range("A1:A2").EntireRow.Delete
     wshS.UsedRange.Copy Destination:=wsht.Range("A1")
     wbkS.Close SaveChanges:=False
     wsht.Name = "Roster"
-    If IsEmpty(wsht.Cells(3, 4)) = False Then
-        sectionID = wsht.Cells(3, 4).Value
+    If sectionCol > -1 Then
+        If IsEmpty(wsht.Cells(1, sectionCol)) = False Then
+            sectionID = wsht.Cells(1, sectionCol).Value
+        Else
+            sectionID = "XX/XX-PHY-XXXXL-XXXXX"
+        End If
+    Else
+        sectionID = "XX/XX-PHY-XXXXL-XXXXX"
     End If
     wsht.Range("B:XFD").ClearContents
     
